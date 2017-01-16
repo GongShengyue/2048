@@ -1,6 +1,9 @@
 package com.example.hp.game2048;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -123,6 +126,29 @@ public class GameView extends GridLayout {
         cardsMap[p.x][p.y].setNum(Math.random()>0.1?2:4);//产生2和4的概率比是1：9
     }
     private void checkComplete(){//检查方格是否已满
+        boolean complete=true;//默认是已经满了，该结束了
+        ALL:
+        for (int y=0;y<4;y++)
+            for (int x=0;x<4;x++){//只要有一种情况（意外）发生，就说名还没有到结束的时候
+                if(cardsMap[x][y].getNum()==0||
+                        (x>0&&cardsMap[x][y].equals(cardsMap[x-1][y]))||
+                        (x<3&&cardsMap[x][y].equals(cardsMap[x+1][y]))||
+                        (y>0&&cardsMap[x][y].equals(cardsMap[x][y-1]))||
+                        (y<3&&cardsMap[x][y].equals(cardsMap[x][y+1]))){
+                    complete=false;
+                    break ALL;//跳出所有循环
+
+                }
+            }
+        if(complete){
+            new AlertDialog.Builder(getContext()).setTitle("你好").setMessage("游戏结束").
+                    setPositiveButton("重来", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startGame();
+                        }
+                    }).show();
+        }
 
     }
     private void swipeLeft(){
