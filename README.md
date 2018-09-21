@@ -1,7 +1,7 @@
 # 2048
 2048Android游戏
 
-指导自网易云课堂，使用Android Studio开发
+，使用Android Studio开发
 
 
 ## 部分游戏截图：
